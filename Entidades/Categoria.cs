@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ControlInventariosAPI.Entidades
 {
@@ -9,5 +10,6 @@ namespace ControlInventariosAPI.Entidades
         [StringLength(maximumLength: 50)]
         [Required]
         public string Descripcion { get; set; }
+        public List<Articulo> Articulos { get; set; }
     }
 }

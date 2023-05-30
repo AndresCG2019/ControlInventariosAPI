@@ -87,7 +87,7 @@ namespace ControlInventariosAPI.Controllers
             }
             else
             {
-                return BadRequest("Login Incorrecto");
+                return BadRequest();
             }
         }
 

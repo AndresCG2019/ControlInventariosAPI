@@ -4,14 +4,16 @@ using ControlInventariosAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ControlInventariosAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230528180343_AddedArticulo")]
+    partial class AddedArticulo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,65 +52,6 @@ namespace ControlInventariosAPI.Migrations
                     b.HasIndex("IdCategoria");
 
                     b.ToTable("Articulos");
-                });
-
-            modelBuilder.Entity("ControlInventariosAPI.Entidades.ArticuloEgreso", b =>
-                {
-                    b.Property<int>("IdEgreso")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Cantidad")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ClaveArticulo")
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("IdPedido")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("PrecioVenta")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("IdEgreso");
-
-                    b.HasIndex("ClaveArticulo");
-
-                    b.HasIndex("IdPedido");
-
-                    b.ToTable("ArticuloEgresos");
-                });
-
-            modelBuilder.Entity("ControlInventariosAPI.Entidades.ArticuloIngreso", b =>
-                {
-                    b.Property<int>("IdIngreso")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Cantidad")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ClaveArticulo")
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("FechaIngreso")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("IdProveedor")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("PrecioCompra")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("IdIngreso");
-
-                    b.HasIndex("ClaveArticulo");
-
-                    b.HasIndex("IdProveedor");
-
-                    b.ToTable("ArticulosIngresos");
                 });
 
             modelBuilder.Entity("ControlInventariosAPI.Entidades.Categoria", b =>
@@ -160,26 +103,6 @@ namespace ControlInventariosAPI.Migrations
                     b.HasKey("IdCliente");
 
                     b.ToTable("Clientes");
-                });
-
-            modelBuilder.Entity("ControlInventariosAPI.Entidades.Pedido", b =>
-                {
-                    b.Property<int>("IdPedido")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("FechaPedido")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("IdCliente")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdPedido");
-
-                    b.HasIndex("IdCliente");
-
-                    b.ToTable("Pedidos");
                 });
 
             modelBuilder.Entity("ControlInventariosAPI.Entidades.Proveedor", b =>
@@ -426,51 +349,6 @@ namespace ControlInventariosAPI.Migrations
                     b.Navigation("Categoria");
                 });
 
-            modelBuilder.Entity("ControlInventariosAPI.Entidades.ArticuloEgreso", b =>
-                {
-                    b.HasOne("ControlInventariosAPI.Entidades.Articulo", "Articulo")
-                        .WithMany("Egresos")
-                        .HasForeignKey("ClaveArticulo");
-
-                    b.HasOne("ControlInventariosAPI.Entidades.Pedido", "Pedido")
-                        .WithMany("Egresos")
-                        .HasForeignKey("IdPedido")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Articulo");
-
-                    b.Navigation("Pedido");
-                });
-
-            modelBuilder.Entity("ControlInventariosAPI.Entidades.ArticuloIngreso", b =>
-                {
-                    b.HasOne("ControlInventariosAPI.Entidades.Articulo", "Articulo")
-                        .WithMany("Ingresos")
-                        .HasForeignKey("ClaveArticulo");
-
-                    b.HasOne("ControlInventariosAPI.Entidades.Proveedor", "Proveedor")
-                        .WithMany("Ingresos")
-                        .HasForeignKey("IdProveedor")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Articulo");
-
-                    b.Navigation("Proveedor");
-                });
-
-            modelBuilder.Entity("ControlInventariosAPI.Entidades.Pedido", b =>
-                {
-                    b.HasOne("ControlInventariosAPI.Entidades.Cliente", "Cliente")
-                        .WithMany("Pedidos")
-                        .HasForeignKey("IdCliente")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cliente");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -522,31 +400,9 @@ namespace ControlInventariosAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ControlInventariosAPI.Entidades.Articulo", b =>
-                {
-                    b.Navigation("Egresos");
-
-                    b.Navigation("Ingresos");
-                });
-
             modelBuilder.Entity("ControlInventariosAPI.Entidades.Categoria", b =>
                 {
                     b.Navigation("Articulos");
-                });
-
-            modelBuilder.Entity("ControlInventariosAPI.Entidades.Cliente", b =>
-                {
-                    b.Navigation("Pedidos");
-                });
-
-            modelBuilder.Entity("ControlInventariosAPI.Entidades.Pedido", b =>
-                {
-                    b.Navigation("Egresos");
-                });
-
-            modelBuilder.Entity("ControlInventariosAPI.Entidades.Proveedor", b =>
-                {
-                    b.Navigation("Ingresos");
                 });
 #pragma warning restore 612, 618
         }

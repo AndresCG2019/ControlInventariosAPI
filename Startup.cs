@@ -1,3 +1,4 @@
+using ControlInventariosAPI.Utilidades;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -62,7 +63,11 @@ namespace ControlInventariosAPI
                 });
             });
 
-            services.AddControllers();
+            services.AddControllers(options => 
+            {
+                options.Filters.Add(typeof(ParsearBadRequest));
+            }).ConfigureApiBehaviorOptions(BehaviorBadRequest.Parsear);
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ControlInventariosAPI", Version = "v1" });
@@ -82,6 +87,8 @@ namespace ControlInventariosAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
